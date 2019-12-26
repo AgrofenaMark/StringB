@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 public class TestClass {
     private static final String TEST_STRING = "Что такое новый год? новый год — мороз и лед!";
     private static final int TEST_STRING_LENGTH = TEST_STRING.length();
-    private static org.slf4j.Logger log;
 
     @Test(testName = "Получить значение, когда начальный индекс = конечному")
     public void testZeroLength() throws StringIndexOutOfBoundsException {
@@ -32,53 +31,28 @@ public class TestClass {
         Assert.assertEquals(response, "кое нов");
     }
 
-    @Test(testName = "Получить строку, если передан номер символа > длины строки", expectedExceptions = {StringIndexOutOfBoundsException.class})
+    @Test(testName = "Получить строку, если передан номер символа > длины строки", expectedExceptions = {StringIndexOutOfBoundsException.class},
+            expectedExceptionsMessageRegExp = "String index out of range: -5")
     public void testGetStringByNonexistentIndex() throws StringIndexOutOfBoundsException {
-        setUp("testGetStringByNonexistentIndex");
-        try {
-            TEST_STRING.substring(TEST_STRING_LENGTH + 5);
-        } catch (StringIndexOutOfBoundsException e) {
-            logAndThrowException(e);
-        }
+        TEST_STRING.substring(TEST_STRING_LENGTH + 5);
     }
 
-    @Test(testName = "Получить строку с первого по последний символ + 1", expectedExceptions = {StringIndexOutOfBoundsException.class})
+    @Test(testName = "Получить строку с первого по последний символ + 1", expectedExceptions = {StringIndexOutOfBoundsException.class},
+            expectedExceptionsMessageRegExp = "begin 0, end 46, length 45")
     public void testGetStringFromFirstToIncrementalLastIndex() throws StringIndexOutOfBoundsException {
-        setUp("testGetStringFromFirstToIncrementalLastIndex");
-        try {
-            TEST_STRING.substring(0, TEST_STRING_LENGTH + 1);
-        } catch (StringIndexOutOfBoundsException e) {
-            logAndThrowException(e);
-        }
+        TEST_STRING.substring(0, TEST_STRING_LENGTH + 1);
     }
 
-    @Test(testName = "Индекс начала > Индекса окончания", expectedExceptions = {StringIndexOutOfBoundsException.class})
+    @Test(testName = "Индекс начала > Индекса окончания", expectedExceptions = {StringIndexOutOfBoundsException.class},
+            expectedExceptionsMessageRegExp = "begin 8, end 2, length 45")
     public void testGetStringWithLargerStartingIndex() throws StringIndexOutOfBoundsException {
-        setUp("testGetStringWithLargerStartingIndex");
-        try {
-            TEST_STRING.substring(8, 2);
-        } catch (StringIndexOutOfBoundsException e) {
-            logAndThrowException(e);
-        }
+        TEST_STRING.substring(8, 2);
     }
 
-    @Test(testName = "Получить строку, если передан отрицательный индекс", expectedExceptions = {StringIndexOutOfBoundsException.class})
+    @Test(testName = "Получить строку, если передан отрицательный индекс", expectedExceptions = {StringIndexOutOfBoundsException.class},
+            expectedExceptionsMessageRegExp = "String index out of range: -3")
     public void testGetStringByNegativeIndex() throws StringIndexOutOfBoundsException {
-        setUp("testGetStringByNegativeIndex");
-        try {
-            TEST_STRING.substring(-3);
-        } catch (StringIndexOutOfBoundsException e) {
-            logAndThrowException(e);
-        }
-    }
-
-    private static void setUp(String name) {
-        log = org.slf4j.LoggerFactory.getLogger(name);
-    }
-
-    private static void logAndThrowException(StringIndexOutOfBoundsException e) throws StringIndexOutOfBoundsException {
-        log.info("message: " + e.getMessage());
-        throw e;
+        TEST_STRING.substring(-3);
     }
 }
 
